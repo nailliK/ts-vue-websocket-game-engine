@@ -1,16 +1,21 @@
-# p10
+# Typescript and Vue3 WebSocket Game Engine
 
 ## Project setup
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### Start Express/WebSocket server for development
+```
+yarn express
+```
+
+### Start development/HMR server
 ```
 yarn serve
 ```
 
-### Compiles and minifies for production
+### Compile and minify front-end for production
 ```
 yarn build
 ```
@@ -18,6 +23,11 @@ yarn build
 ### Run your unit tests
 ```
 yarn test:unit
+```
+
+### Start production server
+```
+express:run
 ```
 
 ### Customize configuration
