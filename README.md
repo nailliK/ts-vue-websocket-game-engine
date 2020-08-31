@@ -27,7 +27,7 @@ yarn test:unit
 
 ### Start production server
 ```
-express:run
+yarn express:run
 ```
 
 ### Customize configuration
