@@ -22,11 +22,22 @@ class SocketClient {
 		return this;
 	}
 
-	onMessage(payload: SocketPackage): void {
-		console.log(payload.status, payload.message);
-	}
+	public joinRoom = (room: string, name: string) => {
+		this.socket.emit("request", <SocketPackage>{
+			request: "join-room",
+			data: <LooseObject>{
+				room: room,
+				name: name,
+				callback: "add-player"
+			}
+		});
+	};
 
-	onBroadcast(payload: SocketPackage): void {
+	private onMessage = (payload: SocketPackage) => {
+		console.log(payload.status, payload.message);
+	};
+
+	private onBroadcast = (payload: SocketPackage) => {
 		if (payload.status === 200) {
 			console.log(payload.message);
 
@@ -42,18 +53,7 @@ class SocketClient {
 		} else {
 			console.log(payload.message);
 		}
-	}
-
-	joinRoom(room: string, name: string): void {
-		this.socket.emit("request", <SocketPackage>{
-			request: "join-room",
-			data: <LooseObject>{
-				room: room,
-				name: name,
-				callback: "add-player"
-			}
-		});
-	}
+	};
 }
 
 export default SocketClient;

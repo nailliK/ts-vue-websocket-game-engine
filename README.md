@@ -1,4 +1,7 @@
-# Typescript and Vue3 WebSocket Game Engine
+# Dev Simulator
+## A Multiplayer Incremental/Idle Game
+
+Create and share code with your colleagues to build software.
 
 ## Project setup
 ```
@@ -30,5 +33,5 @@ yarn test:unit
 yarn express:run
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Vue CLI Customize configuration
+See [Vue CLI Configuration Reference](https://cli.vuejs.org/config/).

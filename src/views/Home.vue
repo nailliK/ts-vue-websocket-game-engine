@@ -1,22 +1,30 @@
 <template>
 	<main class="home">
 		<form @submit.prevent="onJoinRoom">
+			<div>
+				<h1>Welcome to Dev Simulator!</h1>
+			</div>
+
+			<p>Enter your name and the name of the startup you wish to join. If the
+				startup does not exist, you'll create a new one.
+			</p>
+
 			<div class="input input--text">
-				<label for="input-name">Enter Your Name</label>
+				<label for="input-name">Your Name</label>
 				<input
 					id="input-name"
 					v-model="userName">
 			</div>
 
 			<div class="input input--text">
-				<label for="input-room-id">Enter a Room ID</label>
+				<label for="input-startup-name">Startup Name</label>
 				<input
-					id="input-room-id"
-					v-model="roomId">
+					id="input-startup-name"
+					v-model="startupName">
 			</div>
 
 			<div class="input input--button">
-				<button type="submit">Join Room</button>
+				<button type="submit">Enter</button>
 			</div>
 		</form>
 		<!-- <players></players> -->
@@ -25,8 +33,7 @@
 
 <script lang="ts">
 import InputText from "@/components/InputText.vue";
-import {defineComponent, ref, Ref} from "vue";
-import {useStore} from "vuex";
+import {defineComponent, inject, Ref, ref} from "vue";
 import SocketClient from "@/services/SocketClient";
 
 const Home = defineComponent({
@@ -34,19 +41,17 @@ const Home = defineComponent({
 		InputText
 	},
 	setup(props, context) {
-		const store = useStore();
-		const socket: SocketClient = store.state.socket;
-		socket.options.store = store;
+		const socketClient: SocketClient | undefined = inject("socketClient");
 
-		const roomId: Ref<string> = ref("");
+		const startupName: Ref<string> = ref("");
 		const userName: Ref<string> = ref("");
 
 		const onJoinRoom = (e: Event) => {
-			socket.joinRoom(roomId.value, userName.value);
+			socketClient!.joinRoom(startupName.value, userName.value);
 		};
 
 		return {
-			roomId,
+			startupName,
 			userName,
 			onJoinRoom
 		};

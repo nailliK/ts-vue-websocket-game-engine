@@ -1,11 +1,6 @@
 <template>
 	<div id="app">
-		<div id="nav">
-			<router-link to="/">Home</router-link>
-			|
-			<router-link to="/about">About</router-link>
-		</div>
-
+		<page-header/>
 		<router-view/>
 	</div>
 </template>
@@ -16,9 +11,17 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
+import PageHeader from "@/components/PageHeader.vue";
+import SocketClient from "@/services/SocketClient";
 
 const App = defineComponent({
 	name: "App",
+	components: {
+		PageHeader
+	},
+	provide: {
+		socketClient: new SocketClient()
+	},
 	setup() {
 		return {};
 	}
@@ -26,3 +29,7 @@ const App = defineComponent({
 
 export default App;
 </script>
+
+<style lang="scss">
+@import "scss/main";
+</style>
