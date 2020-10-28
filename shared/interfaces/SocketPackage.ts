@@ -1,10 +1,12 @@
 import LooseObject from "./LooseObject";
+import Player from "@/interfaces/Player";
 
 interface SocketPackage {
-	request: string | null,
+	from: string,
+	request: string,
 	status: number | null,
 	message: string,
-	data: LooseObject | null
+	data: LooseObject | Player
 }
 
 export default SocketPackage;

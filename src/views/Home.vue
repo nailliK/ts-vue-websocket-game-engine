@@ -32,22 +32,30 @@
 </template>
 
 <script lang="ts">
-import InputText from "@/components/InputText.vue";
-import {defineComponent, inject, Ref, ref} from "vue";
+import {defineComponent, inject, ref, Ref, SetupContext} from "vue";
 import SocketClient from "@/services/SocketClient";
+import InputText from "@/components/InputText.vue";
+import LooseObject from "@/interfaces/LooseObject";
+import {useStore} from "vuex";
 
 const Home = defineComponent({
 	components: {
 		InputText
 	},
-	setup(props, context) {
-		const socketClient: SocketClient | undefined = inject("socketClient");
+	props: {},
+	setup(props: LooseObject, context: SetupContext) {
+		const store = useStore();
 
 		const startupName: Ref<string> = ref("");
 		const userName: Ref<string> = ref("");
+		const socketClient: SocketClient = inject("socketClient", <SocketClient>{});
+
+		window.addEventListener("socketBroadcast", (e: CustomEvent) => {
+			console.log(e.detail);
+		});
 
 		const onJoinRoom = (e: Event) => {
-			socketClient!.joinRoom(startupName.value, userName.value);
+			socketClient.joinRoom(startupName.value, userName.value);
 		};
 
 		return {

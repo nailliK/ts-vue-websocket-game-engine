@@ -2,17 +2,24 @@ import * as SocketIO from "socket.io";
 import * as Http from "http";
 import SocketPackage from "@/interfaces/SocketPackage";
 import LooseObject from "@/interfaces/LooseObject";
+import SocketClient from "../../shared/interfaces/SocketClient";
 
 class SocketServer {
 	private io: SocketIO.Server;
 	private rooms: LooseObject;
-	private clients: LooseObject;
+	private clients: Array<SocketClient> = [];
 
 	constructor(server: Http.Server) {
 		this.io = SocketIO.listen(server);
 		this.rooms = this.io.sockets.adapter.rooms;
 
 		this.io.on("connection", (client: SocketIO.Socket) => {
+
+			this.clients.push(<SocketClient>{
+				id: client.id,
+				name: ""
+			});
+
 			client.on("request", (data) => {
 				this.parseRequest(data, client);
 			});
@@ -21,7 +28,8 @@ class SocketServer {
 				this.parseMessage(data, client);
 			});
 
-			this.emitMessage({
+			this.emitMessage(<SocketPackage>{
+				from: "server",
 				status: 200,
 				message: "Welcome!"
 			}, client);
@@ -62,19 +70,19 @@ class SocketServer {
 			client.name = username;
 			client.join(roomName);
 
-			this.broadcastMessage({
+			this.broadcastMessage(<SocketPackage>{
 				from: "server",
 				status: 200,
+				request: callback,
 				message: `${client.name} has joined the room`,
 				data: {
 					id: client.id,
-					userName: client.name,
-					callback: callback
+					userName: client.name
 				}
 			}, roomName);
 			return true;
 		} else {
-			this.emitMessage({
+			this.emitMessage(<SocketPackage>{
 				from: "server",
 				status: 401,
 				message: "The room you're trying to enter already has 6 members"
